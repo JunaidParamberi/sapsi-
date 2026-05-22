@@ -49,13 +49,6 @@ function Nav({ active, onNavigate }) {
               <div className="b2">State Association of<br/>Private Security Industry</div>
             </div>
           </div>
-          <div className="brand-divider" />
-          <div className="brand">
-            <VerifymanMark size={28} />
-            <div className="brand-text">
-              <div className="b1" style={{ fontSize: 16 }}>Verifyman</div>
-            </div>
-          </div>
         </div>
 
         <nav className="nav-links" aria-label="Primary">
