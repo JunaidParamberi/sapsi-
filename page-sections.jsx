@@ -144,13 +144,11 @@ function HeroVisual() {
         overflow: 'hidden',
         boxShadow: '0 30px 80px -30px rgba(13,31,92,0.35)'
       }}>
-        <image-slot
-          id="hero-guard"
-          shape="rounded"
-          radius="22"
-          placeholder="Drop a guard photo here"
-          style={{ display: 'block', width: '100%', height: '100%' }}
-        ></image-slot>
+        <img
+          src="image.png"
+          alt="Guard profile photo"
+          style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+        />
       </div>
 
       {/* ID card overlay */}
