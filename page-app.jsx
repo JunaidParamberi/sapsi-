@@ -43,11 +43,7 @@ function Nav({ active, onNavigate }) {
       <div className="container nav">
         <div className="brand-lockup">
           <div className="brand">
-            <SapsiMark size={42} />
-            <div className="brand-text">
-              <div className="b1">SAPSI</div>
-              <div className="b2">State Association of<br/>Private Security Industry</div>
-            </div>
+            <img src="https://www.sapsi.in/theme_assets/images-new/logo1.jpg" alt="SAPSI" style={{ height: 48, width: 'auto', display: 'block' }} />
           </div>
         </div>
 

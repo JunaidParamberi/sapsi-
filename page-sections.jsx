@@ -1157,11 +1157,7 @@ function Footer() {
         }}>
           <div style={{ maxWidth: 360 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-              <SapsiMark size={40} />
-              <div style={{ lineHeight: 1.1 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18, color: '#fff', letterSpacing: '-0.02em' }}>SAPSI</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)' }}>State Association of Private Security Industry</div>
-              </div>
+              <img src="https://www.sapsi.in/theme_assets/images-new/logo1.jpg" alt="SAPSI" style={{ height: 48, width: 'auto', display: 'block', borderRadius: 6 }} />
             </div>
             <p style={{ margin: 0, color: 'rgba(255,255,255,0.7)', fontSize: 14, lineHeight: 1.6 }}>
               Building Trust. Ensuring Safety. Digital verification for a secure tomorrow.
