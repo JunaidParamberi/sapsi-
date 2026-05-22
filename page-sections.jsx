@@ -54,60 +54,146 @@ function CountUp({ to, suffix = "", duration = 1400, format = (n) => n.toLocaleS
    ============================================================ */
 function Hero({ layout }) {
   const r = useReveal();
+  const isCentered = layout === 'centered';
   return (
-    <section id="home" className="section" style={{ paddingTop: 56, paddingBottom: 56, position: 'relative', overflow: 'hidden' }}>
+    <>
+    <section id="home" style={{
+      minHeight: 'min(calc(100vh - 76px), 980px)',
+      display: 'flex', flexDirection: 'column',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Green glow top-right */}
       <div aria-hidden style={{
         position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        background: 'radial-gradient(900px 500px at 80% 20%, color-mix(in oklab, var(--green-500) 8%, transparent), transparent 60%), radial-gradient(700px 500px at 0% 80%, color-mix(in oklab, var(--navy-600) 8%, transparent), transparent 60%)'
+        background:
+          'radial-gradient(900px 600px at 85% 25%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 60%),' +
+          'radial-gradient(800px 600px at 0% 90%, color-mix(in oklab, var(--primary) 8%, transparent), transparent 60%)'
       }} />
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div ref={r} className="reveal" style={{
-          display: 'grid',
-          gridTemplateColumns: layout === 'centered' ? '1fr' : 'minmax(0, 1.05fr) minmax(0, 1fr)',
-          gap: 'clamp(32px, 5vw, 64px)',
-          alignItems: 'center',
-          textAlign: layout === 'centered' ? 'center' : 'left'
+      {/* Dot grid — left half only */}
+      <div aria-hidden style={{
+        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+        backgroundImage: 'radial-gradient(circle, color-mix(in oklab, var(--primary) 12%, transparent) 1px, transparent 1px)',
+        backgroundSize: '28px 28px',
+        maskImage: 'radial-gradient(ellipse at 30% 50%, black 0%, transparent 70%)',
+        WebkitMaskImage: 'radial-gradient(ellipse at 30% 50%, black 0%, transparent 70%)',
+        opacity: 0.5,
+      }} />
+
+      <div className="container" style={{
+        position: 'relative', zIndex: 1, flex: 1,
+        display: 'flex', flexDirection: 'column', minHeight: 0,
+        paddingTop: 'clamp(16px, 2vh, 32px)', paddingBottom: 0,
+      }}>
+        <div ref={r} className={`reveal hero-grid`} style={{
+          textAlign: isCentered ? 'center' : 'left',
+          gridTemplateColumns: isCentered ? '1fr' : undefined,
         }}>
-          <div className="stack" style={{ gap: 24 }}>
-            <div className="row" style={{ justifyContent: layout === 'centered' ? 'center' : 'flex-start' }}>
-              <span className="eyebrow">An initiative by SAPSI × Verifyman</span>
-            </div>
-            <h1 className="display">
-              Digital Guard Onboarding &<br/>
-              <span className="accent-text">ID Generation</span> Made Easy
-            </h1>
-            <p className="lead" style={{ marginInline: layout === 'centered' ? 'auto' : 0 }}>
-              End-to-end digital onboarding, background verification, and secure ID generation for private security guards.
-            </p>
-            <div className="row" style={{ marginTop: 8, justifyContent: layout === 'centered' ? 'center' : 'flex-start' }}>
-              <button className="btn btn-primary" onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
-                Onboard Your Guards
-                <Icon name="arrowRight" size={18} />
-              </button>
-              <button className="btn btn-outline" onClick={() => document.getElementById('verify')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
-                <Icon name="qr" size={18} />
-                Verify a Guard
-              </button>
-            </div>
-            <div className="row" style={{ gap: 22, marginTop: 12, justifyContent: layout === 'centered' ? 'center' : 'flex-start' }}>
-              <TrustItem icon="shieldCheck" label="Secure & Reliable" />
-              <TrustItem icon="bolt" label="Faster Onboarding" />
-              <TrustItem icon="checkCircle" label="Verified & Approved" />
-            </div>
+          <div className="hero-copy-cell">
+            <HeroCopy layout={layout} />
           </div>
-          {layout !== 'centered' && <HeroVisual />}
+          {!isCentered && <HeroVisual />}
         </div>
-        {layout === 'centered' && <div style={{ marginTop: 48 }}><HeroVisual /></div>}
+        {isCentered && <div style={{ flex: 1, minHeight: 0 }}><HeroVisual /></div>}
       </div>
     </section>
+
+    {/* Trust strip */}
+    <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
+      <div className="container" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: 24, alignItems: 'center', paddingBlock: 22,
+      }}>
+        <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+          Trusted across India
+        </div>
+        {[
+          { k: '500+',  v: 'Agencies onboard' },
+          { k: '50k+',  v: 'Guards verified' },
+          { k: '99%',   v: 'Verification success' },
+          { k: '24/7',  v: 'Instant QR check' },
+        ].map((s, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600, color: 'var(--text-strong)', letterSpacing: '-0.02em' }}>{s.k}</span>
+            <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>{s.v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    </>
+  );
+}
+
+function HeroCopy({ layout }) {
+  const isCentered = layout === 'centered';
+  return (
+    <div className="stack" style={{ gap: 26 }}>
+      {/* Pill badge */}
+      <span style={{
+        display: 'inline-flex', alignItems: 'center', gap: 10,
+        alignSelf: isCentered ? 'center' : 'flex-start',
+        padding: '6px 12px 6px 6px', borderRadius: 999,
+        background: 'color-mix(in oklab, var(--accent) 8%, var(--bg))',
+        border: '1px solid color-mix(in oklab, var(--accent) 22%, transparent)',
+        fontSize: 12.5, fontWeight: 500, color: 'var(--text-strong)',
+      }}>
+        <span style={{
+          width: 22, height: 22, borderRadius: '50%',
+          background: 'var(--accent)', color: '#fff',
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon name="shieldCheck" size={13} strokeWidth={2.4} />
+        </span>
+        An initiative by <strong style={{ fontWeight: 600 }}>SAPSI</strong> × <strong style={{ fontWeight: 600 }}>Verifyman</strong>
+      </span>
+
+      {/* Headline */}
+      <h1 className="display" style={{ textWrap: 'balance' }}>
+        Digital Guard{' '}
+        <span style={{ position: 'relative', whiteSpace: 'nowrap', display: 'inline-block' }}>
+          Onboarding
+          <svg aria-hidden viewBox="0 0 240 14" preserveAspectRatio="none" style={{ position: 'absolute', left: 0, right: 0, bottom: '-0.18em', width: '100%', height: '0.32em', color: 'var(--accent)' }}>
+            <path d="M2 9 C 60 2, 120 14, 238 6" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+        </span>
+        {' & '}
+        <span className="accent-text">ID Generation</span>{' '}
+        Made Easy
+      </h1>
+
+      <p className="lead" style={{ marginInline: isCentered ? 'auto' : 0, fontSize: 'clamp(16px, 1.2vw, 18.5px)' }}>
+        End-to-end digital onboarding, background verification, and secure ID generation for private security guards — built for agencies, trusted by clients.
+      </p>
+
+      <div className="row" style={{ marginTop: 4, justifyContent: isCentered ? 'center' : 'flex-start', gap: 12 }}>
+        <button className="btn btn-primary" onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+          Onboard Your Guards
+          <Icon name="arrowRight" size={18} />
+        </button>
+        <button className="btn btn-outline" onClick={() => document.getElementById('verify')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+          <Icon name="qr" size={18} />
+          Verify a Guard
+        </button>
+      </div>
+
+      <div className="row" style={{ gap: 22, marginTop: 4, justifyContent: isCentered ? 'center' : 'flex-start' }}>
+        <TrustItem icon="shieldCheck" label="Secure & Reliable" />
+        <TrustItem icon="bolt"        label="Faster Onboarding" />
+        <TrustItem icon="checkCircle" label="Verified & Approved" />
+      </div>
+    </div>
   );
 }
 
 function TrustItem({ icon, label }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'var(--text-strong)', fontSize: 14, fontWeight: 500 }}>
-      <span style={{ display: 'inline-flex', width: 28, height: 28, borderRadius: '50%', background: 'color-mix(in oklab, var(--accent) 12%, var(--bg))', color: 'var(--accent-deep)', alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name={icon} size={16} strokeWidth={2} />
+      <span style={{
+        display: 'inline-flex', width: 26, height: 26, borderRadius: '50%',
+        background: 'color-mix(in oklab, var(--accent) 12%, var(--bg))',
+        color: 'var(--accent-deep)', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Icon name={icon} size={15} strokeWidth={2.2} />
       </span>
       {label}
     </span>
@@ -116,49 +202,132 @@ function TrustItem({ icon, label }) {
 
 function HeroVisual() {
   return (
-    <div style={{ position: 'relative', minHeight: 'clamp(320px, 60vw, 460px)' }}>
-      {/* Backplate */}
+    <div className="hero-visual-cell">
+      {/* Soft accent glow disc behind guard head */}
       <div aria-hidden style={{
-        position: 'absolute', inset: 0,
-        borderRadius: 28,
-        background: 'linear-gradient(160deg, color-mix(in oklab, var(--navy-100) 50%, var(--bg)), var(--bg))',
-        border: '1px solid var(--border)',
-        overflow: 'hidden'
-      }}>
-        {/* subtle building silhouette pattern */}
-        <svg width="100%" height="100%" viewBox="0 0 400 460" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, opacity: 0.5 }}>
-          <defs>
-            <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M32 0H0V32" fill="none" stroke="var(--border)" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-
-      {/* Guard photo slot */}
-      <div style={{
-        position: 'absolute', right: '4%', top: 12, bottom: 12,
-        width: '70%',
-        borderRadius: 22,
-        overflow: 'hidden',
-        boxShadow: '0 30px 80px -30px rgba(13,31,92,0.35)'
-      }}>
-        <img
-          src="image.png"
-          alt="Guard profile photo"
-          style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      </div>
-
-      {/* ID card overlay */}
-      <IdCard style={{
-        position: 'absolute',
-        left: '2%', bottom: '8%',
-        width: 'min(330px, 70%)',
-        transform: 'rotate(-3deg)',
-        boxShadow: '0 30px 60px -20px rgba(13,31,92,0.45), 0 8px 20px -8px rgba(13,31,92,0.25)'
+        position: 'absolute', left: '50%', top: '38%',
+        width: '78%', aspectRatio: '1 / 1',
+        transform: 'translate(-50%, -50%)',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, color-mix(in oklab, var(--accent) 16%, transparent) 0%, transparent 60%)',
+        filter: 'blur(10px)', zIndex: 0,
       }} />
+
+      {/* Concentric decorative rings */}
+      <svg aria-hidden viewBox="0 0 400 480" preserveAspectRatio="xMidYMid meet" style={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        opacity: 0.14, color: 'var(--primary)', zIndex: 0,
+      }}>
+        <circle cx="200" cy="220" r="120" fill="none" stroke="currentColor" strokeWidth="1" />
+        <circle cx="200" cy="220" r="170" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 6" />
+        <circle cx="200" cy="220" r="225" fill="none" stroke="currentColor" strokeWidth="1" />
+      </svg>
+
+      {/* Ground ellipse shadow */}
+      <div aria-hidden style={{
+        position: 'absolute', left: '18%', right: '18%', bottom: 0,
+        height: 28, borderRadius: '50%',
+        background: 'radial-gradient(ellipse at center, rgba(13,31,92,0.30), transparent 65%)',
+        filter: 'blur(6px)', zIndex: 0,
+      }} />
+
+      {/* Guard cutout — bg-less PNG */}
+      <img
+        src="image.png"
+        alt="Verified security guard with SAPSI ID card"
+        style={{
+          position: 'absolute', left: '50%', bottom: 0,
+          transform: 'translateX(-50%)',
+          height: '100%', width: 'auto', maxWidth: '100%',
+          objectFit: 'contain', objectPosition: 'bottom center',
+          zIndex: 1,
+          filter: 'drop-shadow(0 24px 28px rgba(13,31,92,0.18))',
+          userSelect: 'none', pointerEvents: 'none', display: 'block',
+        }}
+        draggable="false"
+      />
+
+      {/* Floating "Verified & Approved" chip — right of head */}
+      <div className="floating-verified-chip" style={{ position: 'absolute', right: '-4%', top: '18%', zIndex: 2, animation: 'heroFloatB 6s ease-in-out infinite' }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          padding: '10px 14px 10px 10px', borderRadius: 999,
+          background: 'var(--card)', color: 'var(--text-strong)',
+          boxShadow: '0 22px 40px -16px rgba(13,31,92,0.22), 0 4px 12px -4px rgba(13,31,92,0.12)',
+          border: '1px solid var(--border)',
+          fontSize: 13, fontWeight: 600,
+        }}>
+          <span style={{
+            width: 28, height: 28, borderRadius: '50%',
+            background: 'var(--accent)', color: '#fff',
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Icon name="check" size={16} strokeWidth={3} />
+          </span>
+          <span className="verified-bg-label" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+            <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Background</span>
+            <span>Verified &amp; Approved</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Floating mini ID card — bottom-left */}
+      <div className="floating-mini-id" style={{
+        position: 'absolute', left: '-8%', bottom: '4%',
+        width: 'min(220px, 56%)',
+        transform: 'rotate(-6deg)',
+        zIndex: 2,
+        animation: 'heroFloatA 6s ease-in-out infinite',
+      }}>
+        <HeroMiniIdCard />
+      </div>
+
+      <style>{`
+        @keyframes heroFloatA { 0%,100% { transform: rotate(-6deg) translateY(0); } 50% { transform: rotate(-6deg) translateY(-8px); } }
+        @keyframes heroFloatB { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @media (max-width: 720px) { [data-hero-mini-id] { display: none; } }
+      `}</style>
+    </div>
+  );
+}
+
+function HeroMiniIdCard() {
+  return (
+    <div data-hero-mini-id style={{
+      background: '#fff', borderRadius: 14, overflow: 'hidden',
+      border: '1px solid var(--border)',
+      boxShadow: '0 30px 60px -22px rgba(13,31,92,0.45), 0 10px 20px -8px rgba(13,31,92,0.20)',
+      color: '#0d1f5c',
+    }}>
+      <div style={{ background: 'var(--primary)', color: '#fff', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <SapsiMark size={18} />
+          <strong style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.06em' }}>SAPSI</strong>
+        </div>
+        <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.16em', opacity: 0.9 }}>GUARD ID</span>
+      </div>
+      <div style={{ padding: 10, display: 'grid', gridTemplateColumns: '46px 1fr', gap: 10 }}>
+        <div style={{
+          width: 46, height: 58, borderRadius: 5,
+          background: 'linear-gradient(160deg, #1d3a91, #060f2e)',
+          overflow: 'hidden',
+        }}>
+          <svg viewBox="0 0 46 58" width="46" height="58">
+            <circle cx="23" cy="22" r="9" fill="#94a3b8" />
+            <path d="M6 58c0-10 8-16 17-16s17 6 17 16" fill="#94a3b8" />
+          </svg>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, fontSize: 10, lineHeight: 1.3 }}>
+          <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.08em', color: '#5a6481', textTransform: 'uppercase' }}>Name</div>
+          <div style={{ fontWeight: 600 }}>Ramesh S.</div>
+          <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.08em', color: '#5a6481', textTransform: 'uppercase', marginTop: 4 }}>Guard ID</div>
+          <div style={{ fontWeight: 600, fontFamily: 'var(--font-mono)' }}>SAP2405150001</div>
+        </div>
+      </div>
+      <div style={{ background: 'var(--accent)', color: '#fff', padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 600 }}>
+        <Icon name="check" size={12} strokeWidth={3} />
+        Verified &amp; Approved
+      </div>
     </div>
   );
 }
@@ -377,36 +546,100 @@ function StatGrid({ stats, variant }) {
 function WhyChoose() {
   const r = useReveal();
   const items = [
-    { icon: "shieldCheck", title: "Trusted Verification",      body: "Every guard is thoroughly verified through a multi-layered process before approval." },
-    { icon: "qr",          title: "Instant Guard Verification", body: "Scan QR code to instantly verify guard details, status, and validity." },
+    { icon: "shieldCheck", title: "Trusted Verification",      body: "Every guard is thoroughly verified through a multi-layered process before approval.", featured: true },
+    { icon: "qr",          title: "Instant QR Verification",   body: "Scan QR code to instantly verify guard details, status, and validity." },
     { icon: "lock",        title: "Secure & Reliable",          body: "Your data and guard information are protected with top-level security." },
     { icon: "doc",         title: "Complete Transparency",      body: "Real-time status, verification history, and expiry dates — always accessible." },
     { icon: "users",       title: "For Everyone",               body: "Built for agencies, clients, supervisors, and auditors to work together." },
-    { icon: "chart",       title: "Industry Transformation",    body: "Driving the security industry towards a digital, verified, and trustworthy future." },
+    { icon: "chart",       title: "Industry Transformation",    body: "Driving the security industry towards a digital, verified, and trustworthy future.", featured: true },
   ];
   return (
-    <section id="about" className="section" style={{ background: 'var(--bg-subtle)' }}>
+    <section id="about" className="section on-navy">
       <div className="container">
-        <div className="sect-head" ref={r}>
-          <span className="eyebrow">Why Choose Our Project</span>
-          <h2 className="h-section" style={{ marginTop: 14 }}>A smart solution for modern security challenges</h2>
-          <p className="lead">Designed for agencies, clients, and the community.</p>
-        </div>
-        <div style={{
+        <div ref={r} className="reveal" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 50%), 1fr))',
-          gap: 20
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 2fr)',
+          gap: 'clamp(40px, 6vw, 80px)',
+          alignItems: 'start',
         }}>
-          {items.map((it, i) => (
-            <article key={i} className="card card-hover" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <span className="icon-chip">
-                <Icon name={it.icon} size={22} strokeWidth={1.8} />
-              </span>
-              <h3 className="h-card">{it.title}</h3>
-              <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: 14.5, lineHeight: 1.6 }}>{it.body}</p>
-            </article>
-          ))}
+          {/* Left: section header */}
+          <div style={{ position: 'sticky', top: 100 }}>
+            <span className="eyebrow">Why Choose Our Project</span>
+            <h2 className="h-section" style={{ marginTop: 16, maxWidth: 340 }}>
+              A smart solution for modern security
+            </h2>
+            <p className="lead" style={{ marginTop: 16, maxWidth: 320 }}>
+              Designed for agencies, clients, and the community — backed by SAPSI & Verifyman.
+            </p>
+            <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { num: '500+', label: 'Agencies trust us' },
+                { num: '50k+', label: 'Guards verified' },
+                { num: '99%',  label: 'Success rate' },
+              ].map((s, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: 14,
+                  padding: '12px 16px', borderRadius: 12,
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}>
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: 'var(--green-400)', letterSpacing: '-0.03em', lineHeight: 1 }}>{s.num}</span>
+                  <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>{s.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: 2-col feature grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 14,
+          }}>
+            {items.map((it, i) => (
+              <article key={i} style={{
+                padding: '24px 22px',
+                borderRadius: 18,
+                background: it.featured
+                  ? 'rgba(18,183,106,0.08)'
+                  : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${it.featured ? 'rgba(18,183,106,0.22)' : 'rgba(255,255,255,0.07)'}`,
+                display: 'flex', flexDirection: 'column', gap: 14,
+                transition: 'transform .22s ease, background .22s ease, border-color .22s ease',
+                cursor: 'default',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.background = it.featured ? 'rgba(18,183,106,0.13)' : 'rgba(255,255,255,0.06)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.background = it.featured ? 'rgba(18,183,106,0.08)' : 'rgba(255,255,255,0.03)'; }}
+              >
+                <span style={{
+                  width: 44, height: 44, borderRadius: 12,
+                  background: it.featured ? 'var(--green-500)' : 'rgba(255,255,255,0.07)',
+                  border: `1px solid ${it.featured ? 'transparent' : 'rgba(255,255,255,0.12)'}`,
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  color: it.featured ? '#fff' : 'var(--green-300)',
+                  flexShrink: 0,
+                }}>
+                  <Icon name={it.icon} size={20} strokeWidth={1.8} />
+                </span>
+                <h3 style={{
+                  fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600,
+                  color: '#fff', margin: 0, letterSpacing: '-0.01em', lineHeight: 1.3,
+                }}>{it.title}</h3>
+                <p style={{ margin: 0, color: 'rgba(255,255,255,0.55)', fontSize: 13.5, lineHeight: 1.65 }}>{it.body}</p>
+              </article>
+            ))}
+          </div>
         </div>
+
+        <style>{`
+          @media (max-width: 760px) {
+            #about .reveal { grid-template-columns: 1fr !important; }
+            #about .reveal > div:first-child { position: static !important; }
+          }
+          @media (max-width: 480px) {
+            #about .reveal > div:last-child { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
       </div>
     </section>
   );

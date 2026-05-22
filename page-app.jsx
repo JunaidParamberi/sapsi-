@@ -62,7 +62,7 @@ function Nav({ active, onNavigate }) {
         </nav>
 
         <button className="btn btn-primary btn-sm btn-login" style={{ height: 42 }}>
-          Partner Login
+          Invite Agency
         </button>
 
         <button className="nav-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle menu">
@@ -84,7 +84,7 @@ function Nav({ active, onNavigate }) {
             </a>
           ))}
           <button className="btn btn-primary" style={{ width: '100%' }}>
-            Partner Login
+            Invite Agency
           </button>
         </nav>
       )}
