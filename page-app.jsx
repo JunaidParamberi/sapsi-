@@ -1,4 +1,5 @@
 // app.jsx — root App, navigation, tweaks wiring
+const { useState, useEffect } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "primary": "#0d1f5c",
@@ -23,6 +24,7 @@ function deeper(hex, amt = 0.15) {
 }
 
 function Nav({ active, onNavigate }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const links = [
     { id: "home",   label: "Home" },
     { id: "how",    label: "How It Works" },
@@ -30,6 +32,12 @@ function Nav({ active, onNavigate }) {
     { id: "about",  label: "About Us" },
     { id: "contact",label: "Contact" },
   ];
+
+  const handleNavClick = (id) => {
+    onNavigate(id);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className="nav-wrap">
       <div className="container nav">
@@ -60,10 +68,33 @@ function Nav({ active, onNavigate }) {
           ))}
         </nav>
 
-        <button className="btn btn-primary btn-sm" style={{ height: 42 }}>
+        <button className="btn btn-primary btn-sm btn-login" style={{ height: 42 }}>
           Partner Login
         </button>
+
+        <button className="nav-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
       </div>
+
+      {mobileMenuOpen && (
+        <nav className="mobile-menu">
+          {links.map(l => (
+            <a key={l.id} href={`#${l.id}`}
+              className={"mobile-link" + (active === l.id ? " active" : "")}
+              onClick={(e) => { e.preventDefault(); handleNavClick(l.id); }}>
+              {l.label}
+            </a>
+          ))}
+          <button className="btn btn-primary" style={{ width: '100%' }}>
+            Partner Login
+          </button>
+        </nav>
+      )}
     </header>
   );
 }

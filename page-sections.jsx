@@ -116,7 +116,7 @@ function TrustItem({ icon, label }) {
 
 function HeroVisual() {
   return (
-    <div style={{ position: 'relative', minHeight: 460 }}>
+    <div style={{ position: 'relative', minHeight: 'clamp(320px, 60vw, 460px)' }}>
       {/* Backplate */}
       <div aria-hidden style={{
         position: 'absolute', inset: 0,
@@ -361,7 +361,7 @@ function StatGrid({ stats, variant }) {
   }
   // split (default)
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 28 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(120px, 50%), 1fr))', gap: 28 }}>
       {stats.map((s, i) => (
         <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 6, position: 'relative', paddingLeft: 18 }}>
           <span aria-hidden style={{ position: 'absolute', left: 0, top: 6, bottom: 6, width: 3, borderRadius: 2, background: 'var(--accent)' }} />
@@ -396,7 +396,7 @@ function WhyChoose() {
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 50%), 1fr))',
           gap: 20
         }}>
           {items.map((it, i) => (
@@ -444,7 +444,7 @@ function WhyThisProject() {
                 The security industry plays a vital role in ensuring the safety of our homes, workplaces, and communities. However, the lack of a standardized verification system has been a major concern. This project is initiated to:
               </p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 50%), 1fr))', gap: 14 }}>
               {pillars.map((p, i) => (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'flex-start', gap: 12,
@@ -527,7 +527,7 @@ function HowItWorks() {
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(130px, 50%), 1fr))',
           gap: 16,
           marginBottom: 32
         }}>
@@ -739,7 +739,8 @@ function PhoneScanner() {
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{
         position: 'relative',
-        width: 280, height: 560,
+        width: 'clamp(160px, 50vw, 280px)',
+        aspectRatio: '1/2',
         background: '#0a1845',
         borderRadius: 44,
         padding: 12,
@@ -759,7 +760,8 @@ function PhoneScanner() {
           <div style={{ textAlign: 'center', fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.7)', marginTop: 18 }}>Scan QR Code</div>
           <div style={{
             margin: '24px auto 18px',
-            width: 200, height: 200,
+            width: 'min(70%, 200px)',
+            aspectRatio: '1',
             background: '#fff',
             borderRadius: 16,
             padding: 12,
@@ -877,7 +879,7 @@ function ChangeCTA() {
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr)) minmax(220px, 280px)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 50%), 1fr))',
           gap: 20, alignItems: 'stretch'
         }}>
           {audiences.map((a, i) => (
@@ -919,7 +921,7 @@ function Footer() {
       <div className="container">
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.4fr) repeat(auto-fit, minmax(140px, 1fr))',
+          gridTemplateColumns: 'minmax(0, 1.4fr) repeat(auto-fit, minmax(min(100px, 50%), 1fr))',
           gap: 36
         }}>
           <div style={{ maxWidth: 360 }}>
