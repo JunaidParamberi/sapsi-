@@ -128,25 +128,6 @@ function HeroCopy({ layout }) {
   const isCentered = layout === 'centered';
   return (
     <div className="stack" style={{ gap: 26 }}>
-      {/* Pill badge */}
-      <span style={{
-        display: 'inline-flex', alignItems: 'center', gap: 10,
-        alignSelf: isCentered ? 'center' : 'flex-start',
-        padding: '6px 12px 6px 6px', borderRadius: 999,
-        background: 'color-mix(in oklab, var(--accent) 8%, var(--bg))',
-        border: '1px solid color-mix(in oklab, var(--accent) 22%, transparent)',
-        fontSize: 12.5, fontWeight: 500, color: 'var(--text-strong)',
-      }}>
-        <span style={{
-          width: 22, height: 22, borderRadius: '50%',
-          background: 'var(--accent)', color: '#fff',
-          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Icon name="shieldCheck" size={13} strokeWidth={2.4} />
-        </span>
-        An initiative by <strong style={{ fontWeight: 600 }}>SAPSI</strong> × <strong style={{ fontWeight: 600 }}>Verifyman</strong>
-      </span>
-
       {/* Headline */}
       <h1 className="display" style={{ textWrap: 'balance' }}>
         Digital Guard{' '}
