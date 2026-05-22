@@ -204,10 +204,7 @@ const SapsiMark = ({ size = 44 }) => (
 );
 
 const VerifymanMark = ({ size = 44 }) => (
-  <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
-    <path d="M32 4 10 12v16c0 13 9.5 22.5 22 28 12.5-5.5 22-15 22-28V12L32 4Z" fill="none" stroke="#0d1f5c" strokeWidth="3" />
-    <path d="M22 32 30 40 44 26" fill="none" stroke="#12b76a" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
+  <img src="https://verifyman.in/Verifyman_logo_default.svg" alt="Verifyman" width={size} height={size} style={{ objectFit: 'contain' }} />
 );
 
 Object.assign(window, { Icon, SapsiMark, VerifymanMark });
